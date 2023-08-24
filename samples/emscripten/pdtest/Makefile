@@ -9,4 +9,5 @@ LDFLAGS = -L$(LIBPD_DIR)/build/libs -lpd -lm
 .PHONY: clean clobber
 
 $(TARGET): $(SRC_FILES) main.pd
-	emcc $(CFLAGS) -o $(TARGET) $(SRC_FILES) --closure 1 -s USE_SDL=2 -s ERROR_ON_UNDEFINED_SYMBOLS=0 --preload-file main.pd $(LDFLAGS)
+	emcc $(CFLAGS) -o $(TARGET) $(SRC_FILES) --closure 1 -s USE_SDL=2 -s ERROR_ON_UNDEFINED_SYMBOLS=0  -sEXPORTED_RUNTIME_METHODS=ccall,cwrap --preload-file main.pd $(LDFLAGS)
+
