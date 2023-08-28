@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include "z_libpd.h"
 
-void audio(void *userdata, Uint8 *stream, int len)
-{
+void audio(void *userdata, Uint8 *stream, int len){
+
   float inbuf[64], outbuf[64][2];
   float *b = (float *) stream;
   int m = len / sizeof(float) / 2;
@@ -15,7 +15,7 @@ void audio(void *userdata, Uint8 *stream, int len)
   while (m > 0)
   {
     for (int i = 0; i < 64; ++i)
-      inbuf[i] = 0;
+      inbuf[i] = 
     libpd_process_float(1, &inbuf[0], &outbuf[0][0]);
     for (int i = 0; i < 64; ++i)
       for (int j = 0; j < 2; ++j)
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
   want.freq = 48000;
   want.format = AUDIO_F32;
   want.channels = 2;
-  want.samples = 4096;
+  want.samples = 256;
   want.callback = audio;
   SDL_AudioDeviceID dev = SDL_OpenAudioDevice(NULL, 0, &want, &have, SDL_AUDIO_ALLOW_ANY_CHANGE);
   printf("want: %d %d %d %d\n", want.freq, want.format, want.channels, want.samples);
