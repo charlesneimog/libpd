@@ -57,6 +57,8 @@ void audio(void *userdata, Uint8 *stream, int len){
     float *b = (float *) stream;
     int m = len / sizeof(float) / 2;
     int k = 0;
+    
+    printf("Length is %d\n", len);
 
     while (m > 0) {
         for (int i = 0; i < 64; ++i)
@@ -78,29 +80,24 @@ void pdprint(const char *s) {
 
 // ==============================================
 int main(int argc, char **argv){
-    
-    // initialize SDL2 audio
     SDL_Init(SDL_INIT_AUDIO);
     SDL_AudioSpec want, have;
     want.freq = 48000;
     want.format = AUDIO_F32;
     want.channels = 2;
-    want.samples = 1024;
+    want.samples = 64;
     want.callback = audio;
     SDL_AudioDeviceID dev = SDL_OpenAudioDevice(NULL, 0, &want, &have, SDL_AUDIO_ALLOW_ANY_CHANGE);
 
     libpd_set_printhook(pdprint);
 
-    // initialize libpd    
     libpd_init();
     libpd_init_audio(1, 2, have.freq);
 
-    // turn on dsp
     libpd_start_message(1); // liga o dsp
     libpd_add_float(1.0f);
     libpd_finish_message("pd", "dsp");
 
-    // open patch
     libpd_openfile("main.pd", "."); // PATCH
     // -----------
 
